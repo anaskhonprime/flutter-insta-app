@@ -1,18 +1,89 @@
 import 'package:flutter/material.dart';
+import './style.dart' as style;
 
 void main() {
-  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: const MyApp()));
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: style.theme,
+      home: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var tab = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(child: Text("INIT")),
-      bottomNavigationBar: BottomAppBar(),
+      appBar: AppBar(
+        title: Text("Instagram"),
+        actions: [Icon(Icons.add_box_outlined)],
+      ),
+      body: Center(child: [HomeUI(), Text("Shop")][tab]),
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        onTap: (i) {
+          setState(() {
+            tab = i;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag_outlined),
+            label: "Shop",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HomeUI extends StatelessWidget {
+  const HomeUI({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 6,
+      itemBuilder: (contect, i) {
+        return Container(
+          width: double.infinity,
+          height: 400,
+          color: Colors.white38,
+          padding: EdgeInsets.all(5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset('./assets/a.jpg'),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Text("Like 100"),
+                    Text("Nickname"),
+                    Text("Comment"),
+                  ],
+                ),
+              )
+            ],
+          ),
+          
+        );
+      },
     );
   }
 }
