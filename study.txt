@@ -44,3 +44,13 @@
   1번은 state에 tab 현재상태 저장
   2번은 state에 따라 tab 어떻게 보일지 작성
   3번은 사용자가 쉽게 state 
+
+- 이미지 링크 사용하고 싶다면 Image.network("이미지 링크 주소");
+  사용하면 됨
+
+
+**  앱이 서버와 데이터 주고받는 법 ** 
+
+- http 설치 및 import
+- get 요청하기, (async + await) http.get(Uri.parse('여기다가 링크')) 사용
+- void initState() 함수는 async + await 사용할수없음

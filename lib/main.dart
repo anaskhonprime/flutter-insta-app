@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import './style.dart' as style;
 
 void main() {
@@ -20,6 +22,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var tab = 0;
+
+  getData() async {
+    var result = await http.get(
+      Uri.parse('https://codingapple1.github.io/app/data.json'),
+    );
+    var result2 = jsonDecode(result.body);
+    print(result2);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +94,9 @@ class HomeUI extends StatelessWidget {
                     Text("Comment"),
                   ],
                 ),
-              )
+              ),
             ],
           ),
-          
         );
       },
     );
