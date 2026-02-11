@@ -54,3 +54,4 @@
 - http 설치 및 import
 - get 요청하기, (async + await) http.get(Uri.parse('여기다가 링크')) 사용
 - void initState() 함수는 async + await 사용할수없음
+- 

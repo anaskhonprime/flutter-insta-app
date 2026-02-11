@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/rendering.dart';
 import 'dart:convert';
 import './style.dart' as style;
 
@@ -22,13 +23,19 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var tab = 0;
+  var map = {'name': 'John', 'age': 20, 'job': 'Developer'};
+
+  var tmp = [];
 
   getData() async {
     var result = await http.get(
       Uri.parse('https://codingapple1.github.io/app/data.json'),
     );
-    var result2 = jsonDecode(result.body);
-    print(result2);
+
+    setState(() {
+      tmp = jsonDecode(result.body);
+      print(tmp);
+    });
   }
 
   @override
@@ -44,7 +51,7 @@ class _MyAppState extends State<MyApp> {
         title: Text("Instagram"),
         actions: [Icon(Icons.add_box_outlined)],
       ),
-      body: Center(child: [HomeUI(), Text("Shop")][tab]),
+      body: Center(child: [HomeUI(tmp: tmp), Text("Shop")][tab]),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -68,14 +75,34 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class HomeUI extends StatelessWidget {
-  const HomeUI({super.key});
+class HomeUI extends StatefulWidget {
+  HomeUI({this.tmp, super.key});
+  final tmp;
+  @override
+  State<HomeUI> createState() => _HomeUIState();
+}
+
+class _HomeUIState extends State<HomeUI> {
+  var scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    scroll.addListener(() {
+      print(scroll.position.pixels);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.tmp.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return ListView.builder(
-      itemCount: 6,
-      itemBuilder: (contect, i) {
+      itemCount: 3,
+      controller: scroll,
+      itemBuilder: (context, i) {
         return Container(
           width: double.infinity,
           height: 400,
@@ -84,14 +111,19 @@ class HomeUI extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset('./assets/a.jpg'),
+              SizedBox(
+                width: double.infinity,
+                height: 250,
+                child: Image.network(widget.tmp[i]['image'], fit: BoxFit.cover),
+              ),
               Container(
                 padding: EdgeInsets.all(20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Like 100"),
-                    Text("Nickname"),
-                    Text("Comment"),
+                    Text('Likes : ${widget.tmp[i]['likes']}'),
+                    Text(widget.tmp[i]['user']),
+                    Text(widget.tmp[i]['content']),
                   ],
                 ),
               ),
