@@ -24,7 +24,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var tab = 0;
   var map = {'name': 'John', 'age': 20, 'job': 'Developer'};
-
   var tmp = [];
 
   getData() async {
@@ -49,7 +48,19 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Instagram"),
-        actions: [Icon(Icons.add_box_outlined)],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Upload(),
+                ),
+              );
+            },
+            icon: Icon(Icons.add_box_outlined),
+          ),
+        ],
       ),
       body: Center(child: [HomeUI(tmp: tmp), Text("Shop")][tab]),
       bottomNavigationBar: BottomNavigationBar(
@@ -89,7 +100,7 @@ class _HomeUIState extends State<HomeUI> {
   void initState() {
     super.initState();
     scroll.addListener(() {
-      print(scroll.position.pixels);
+      if (scroll.position.pixels == scroll.position.maxScrollExtent) {}
     });
   }
 
@@ -131,6 +142,22 @@ class _HomeUIState extends State<HomeUI> {
           ),
         );
       },
+    );
+  }
+}
+
+class Upload extends StatelessWidget {
+  const Upload({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Upload"),),
+      body: Column(
+        children: [
+          Text("Upload Page")
+        ],
+      ),
     );
   }
 }
